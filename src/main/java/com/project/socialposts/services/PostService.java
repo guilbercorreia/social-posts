@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface PostService {
 
-    Post addPost(Post post);
+    Post addPost(Long id, Post post);
     List<Post> findAll();
-    void deletePost(Long id);
+    void deletePost(Long postID,Long userId);
 
 }

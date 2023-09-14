@@ -22,15 +22,15 @@ public class PostController {
         return ResponseEntity.ok().body(postService.findAll());
     }
 
-    @PostMapping
-    public ResponseEntity<Post> addPost(@RequestBody Post post){
-        postService.addPost(post);
+    @PostMapping(value = "/{id}")
+    public ResponseEntity<Post> addPost(@PathVariable Long id,@RequestBody Post post){
+        postService.addPost(id, post);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/posts/{id}").buildAndExpand(post.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void removePost(@PathVariable Long id){
-        postService.deletePost(id);
+    @DeleteMapping(value = "/{id}/user/{user}")
+    public void removePost(@PathVariable Long id, @PathVariable Long user){
+        postService.deletePost(id, user);
     }
 }
