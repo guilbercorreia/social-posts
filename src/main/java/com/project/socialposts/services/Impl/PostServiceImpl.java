@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -22,21 +23,28 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post addPost(Long id,Post post) {
-        post.setDate(Date.from(Instant.now()));
+        userRepository.findById(id).orElseThrow(NoSuchElementException::new);
         var user = userRepository.findById(id).get();
+        post.setDate(Date.from(Instant.now()));
         user.getPost().add(post);
         return postRepository.save(post);
     }
 
     @Override
     public void deletePost(Long postId, Long userId) {
-        var user = userRepository.findById(userId).get();
-        user.getPost().remove(postRepository.findById(postId).get());
+        var user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+        var post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post not found"));
+        user.getPost().remove(post);
         postRepository.deleteById(postId);
     }
 
     @Override
     public List<Post> findAll() {
         return postRepository.findAll();
+    }
+
+    @Override
+    public Post findById(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Post not found"));
     }
 }

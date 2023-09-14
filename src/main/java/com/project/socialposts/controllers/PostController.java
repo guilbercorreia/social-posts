@@ -22,6 +22,10 @@ public class PostController {
         return ResponseEntity.ok().body(postService.findAll());
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Post> findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(postService.findById(id));
+    }
     @PostMapping(value = "/{id}")
     public ResponseEntity<Post> addPost(@PathVariable Long id,@RequestBody Post post){
         postService.addPost(id, post);

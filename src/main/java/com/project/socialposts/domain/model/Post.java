@@ -1,6 +1,7 @@
 package com.project.socialposts.domain.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 import jakarta.persistence.*;
 
@@ -9,7 +10,7 @@ import jakarta.persistence.*;
 public class Post {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String body;
@@ -55,5 +56,22 @@ public class Post {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Post other = (Post) obj;
+        return Objects.equals(id, other.id);
     }
 }
